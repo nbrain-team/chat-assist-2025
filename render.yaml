@@ -1,0 +1,108 @@
+services:
+  - type: private_service
+    name: opensearch
+    env: docker
+    image: opensearchproject/opensearch:2.14.0
+    plan: standard
+    region: oregon
+    autoDeploy: false
+    disk:
+      name: opensearch-data
+      mountPath: /usr/share/opensearch/data
+      sizeGB: 40
+    ports:
+      - port: 9200
+        protocol: tcp
+    envVars:
+      - key: discovery.type
+        value: single-node
+      - key: DISABLE_INSTALL_DEMO_CONFIG
+        value: "true"
+      - key: DISABLE_SECURITY_PLUGIN
+        value: "true"
+      - key: plugins.security.disabled
+        value: "true"
+      - key: OPENSEARCH_JAVA_OPTS
+        value: -Xms1g -Xmx1g
+
+  - type: private_service
+    name: redis
+    env: docker
+    image: redis:7
+    plan: starter
+    region: oregon
+    autoDeploy: false
+    ports:
+      - port: 6379
+        protocol: tcp
+    envVars:
+      - key: REDIS_PASSWORD
+        sync: false
+    dockerCommand: sh -c "redis-server --appendonly yes --requirepass \"$REDIS_PASSWORD\""
+
+  - type: private_service
+    name: minio
+    env: docker
+    image: minio/minio:latest
+    plan: starter
+    region: oregon
+    autoDeploy: false
+    disk:
+      name: minio-data
+      mountPath: /data
+      sizeGB: 40
+    ports:
+      - port: 9000
+        protocol: tcp
+      - port: 9001
+        protocol: tcp
+    envVars:
+      - key: MINIO_ROOT_USER
+        sync: false
+      - key: MINIO_ROOT_PASSWORD
+        sync: false
+    dockerCommand: server /data --console-address ":9001"
+
+  - type: web
+    name: ragflow-web
+    env: docker
+    plan: standard
+    region: oregon
+    autoDeploy: true
+    envVars:
+      - key: DB_TYPE
+        value: postgres
+      - key: POSTGRES_HOST
+        value: dpg-d1g44qnfte5s7387lqt0-a
+      - key: POSTGRES_PORT
+        value: "5432"
+      - key: POSTGRES_DBNAME
+        value: nbrain_database_clean
+      - key: POSTGRES_USER
+        value: nbrain_database_clean_user
+      - key: POSTGRES_PASSWORD
+        sync: false
+      - key: DOC_ENGINE
+        value: opensearch
+      - key: OS_HOST
+        value: opensearch
+      - key: REDIS_HOST
+        value: redis
+      - key: REDIS_PASSWORD
+        sync: false
+      - key: MINIO_HOST
+        value: minio
+      - key: MINIO_USER
+        sync: false
+      - key: MINIO_PASSWORD
+        sync: false
+      - key: LLM_FACTORY
+        value: OpenAI
+      - key: OPENAI_API_KEY
+        sync: false
+      - key: DEFAULT_CHAT_MODEL
+        value: gpt-5
+      - key: DEFAULT_EMBEDDING_MODEL
+        value: text-embedding-3-large
+      - key: LIGHTEN
+        value: "1" 
