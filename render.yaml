@@ -10,9 +10,6 @@ services:
       name: opensearch-data
       mountPath: /usr/share/opensearch/data
       sizeGB: 40
-    ports:
-      - port: 9200
-        protocol: tcp
     envVars:
       - key: discovery.type
         value: single-node
@@ -32,9 +29,6 @@ services:
     plan: starter
     region: oregon
     autoDeploy: false
-    ports:
-      - port: 6379
-        protocol: tcp
     envVars:
       - key: REDIS_PASSWORD
         sync: false
@@ -51,11 +45,6 @@ services:
       name: minio-data
       mountPath: /data
       sizeGB: 40
-    ports:
-      - port: 9000
-        protocol: tcp
-      - port: 9001
-        protocol: tcp
     envVars:
       - key: MINIO_ROOT_USER
         sync: false
