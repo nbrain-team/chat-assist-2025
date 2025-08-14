@@ -138,6 +138,13 @@
                     "max_tokens": 2048,
                     "model_type": "tts",
                     "is_tools": false
+                },
+                {
+                    "llm_name": "gpt-5",
+                    "tags": "LLM,CHAT,1M,IMAGE2TEXT",
+                    "max_tokens": 1048576,
+                    "model_type": "chat",
+                    "is_tools": true
                 }
             ]
         },

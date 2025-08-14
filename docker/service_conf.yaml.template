@@ -18,7 +18,7 @@ es:
   username: '${ES_USER:-elastic}'
   password: '${ELASTIC_PASSWORD:-infini_rag_flow}'
 os:
-  hosts: 'http://${OS_HOST:-opensearch01}:9201'
+  hosts: 'http://${OS_HOST:-opensearch}:9200'
   username: '${OS_USER:-admin}'
   password: '${OPENSEARCHH_PASSWORD:-infini_rag_flow_OS_01}'
 infinity:
@@ -29,14 +29,14 @@ redis:
   password: '${REDIS_PASSWORD:-infini_rag_flow}'
   host: '${REDIS_HOST:-redis}:6379'
 
-# postgres:
-#   name: '${POSTGRES_DBNAME:-rag_flow}'
-#   user: '${POSTGRES_USER:-rag_flow}'
-#   password: '${POSTGRES_PASSWORD:-infini_rag_flow}'
-#   host: '${POSTGRES_HOST:-postgres}'
-#   port: 5432
-#   max_connections: 100
-#   stale_timeout: 30
+postgres:
+  name: '${POSTGRES_DBNAME:-rag_flow}'
+  user: '${POSTGRES_USER:-rag_flow}'
+  password: '${POSTGRES_PASSWORD:-infini_rag_flow}'
+  host: '${POSTGRES_HOST:-postgres}'
+  port: 5432
+  max_connections: 100
+  stale_timeout: 30
 # s3:
 #   access_key: 'access_key'
 #   secret_key: 'secret_key'
@@ -64,16 +64,16 @@ redis:
 #   secret: 'secret'
 #   tenant_id: 'tenant_id'
 #   container_name: 'container_name'
-# user_default_llm:
-#   factory: 'Tongyi-Qianwen'
-#   api_key: 'sk-xxxxxxxxxxxxx'
-#   base_url: ''
-#   default_models:
-#     chat_model: 'qwen-plus'
-#     embedding_model: 'BAAI/bge-large-zh-v1.5@BAAI'
-#     rerank_model: ''
-#     asr_model: ''
-#     image2text_model: ''
+user_default_llm:
+  factory: '${LLM_FACTORY:-OpenAI}'
+  api_key: '${OPENAI_API_KEY:-}'
+  base_url: '${OPENAI_BASE_URL:-}'
+  default_models:
+    chat_model: '${DEFAULT_CHAT_MODEL:-gpt-4.1}'
+    embedding_model: '${DEFAULT_EMBEDDING_MODEL:-text-embedding-3-large}'
+    rerank_model: ''
+    asr_model: ''
+    image2text_model: ''
 # oauth:
 #   oauth2:
 #     display_name: "OAuth2"
