@@ -1,5 +1,5 @@
 services:
-  - type: private_service
+  - type: pserv
     name: opensearch
     env: docker
     image: opensearchproject/opensearch:2.14.0
@@ -25,7 +25,7 @@ services:
       - key: OPENSEARCH_JAVA_OPTS
         value: -Xms1g -Xmx1g
 
-  - type: private_service
+  - type: pserv
     name: redis
     env: docker
     image: redis:7
@@ -40,7 +40,7 @@ services:
         sync: false
     dockerCommand: sh -c "redis-server --appendonly yes --requirepass \"$REDIS_PASSWORD\""
 
-  - type: private_service
+  - type: pserv
     name: minio
     env: docker
     image: minio/minio:latest
