@@ -166,9 +166,15 @@ COPY docs docs
 RUN --mount=type=cache,id=ragflow_npm,target=/root/.npm,sharing=locked \
     cd web && npm install && npm run build
 
-COPY .git /ragflow/.git
+# Removed copying .git to avoid build failures on platforms that omit VCS data
+# COPY .git /ragflow/.git
 
-RUN version_info=$(git describe --tags --match=v* --first-parent --always); \
+RUN version_info="unknown"; \
+    if [ -d .git ]; then \
+        version_info=$(git describe --tags --match=v* --first-parent --always || echo "unknown"); \
+    else \
+        version_info="${RENDER_GIT_COMMIT:-unknown}"; \
+    fi; \
     if [ "$LIGHTEN" == "1" ]; then \
         version_info="$version_info slim"; \
     else \
