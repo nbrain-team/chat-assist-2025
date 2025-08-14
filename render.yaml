@@ -11,16 +11,13 @@ services:
       mountPath: /usr/share/opensearch/data
       sizeGB: 40
     envVars:
-      - key: discovery.type
-        value: single-node
       - key: DISABLE_INSTALL_DEMO_CONFIG
         value: "true"
       - key: DISABLE_SECURITY_PLUGIN
         value: "true"
-      - key: plugins.security.disabled
-        value: "true"
       - key: OPENSEARCH_JAVA_OPTS
         value: -Xms1g -Xmx1g
+    dockerCommand: opensearch -E discovery.type=single-node
 
   - type: pserv
     name: redis
