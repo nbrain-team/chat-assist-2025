@@ -13,11 +13,9 @@ services:
     envVars:
       - key: DISABLE_INSTALL_DEMO_CONFIG
         value: "true"
-      - key: DISABLE_SECURITY_PLUGIN
-        value: "true"
       - key: OPENSEARCH_JAVA_OPTS
         value: -Xms1g -Xmx1g
-    dockerCommand: opensearch -E discovery.type=single-node
+    startCommand: opensearch -E discovery.type=single-node -E plugins.security.disabled=true
 
   - type: pserv
     name: redis
@@ -29,7 +27,7 @@ services:
     envVars:
       - key: REDIS_PASSWORD
         sync: false
-    dockerCommand: sh -c "redis-server --appendonly yes --requirepass \"$REDIS_PASSWORD\""
+    startCommand: sh -c "redis-server --appendonly yes --requirepass \"$REDIS_PASSWORD\""
 
   - type: pserv
     name: minio
@@ -47,7 +45,7 @@ services:
         sync: false
       - key: MINIO_ROOT_PASSWORD
         sync: false
-    dockerCommand: server /data --console-address ":9001"
+    startCommand: server /data --console-address ":9001"
 
   - type: web
     name: ragflow-web
