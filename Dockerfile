@@ -161,10 +161,16 @@ RUN --mount=type=cache,id=ragflow_uv,target=/root/.cache/uv,sharing=locked \
         uv sync --python 3.10 --frozen --all-extras; \
     fi
 
+# Optimize web build caching: install deps only when package files change
+COPY web/package.json web/package-lock.json web/
+RUN --mount=type=cache,id=ragflow_npm,target=/root/.npm,sharing=locked \
+    cd web && npm ci --no-audit --no-fund
+
+# Copy application sources after deps are cached
 COPY web web
 COPY docs docs
 RUN --mount=type=cache,id=ragflow_npm,target=/root/.npm,sharing=locked \
-    cd web && npm install && npm run build
+    cd web && npm run build
 
 # Removed copying .git to avoid build failures on platforms that omit VCS data
 # COPY .git /ragflow/.git
