@@ -72,13 +72,22 @@ services:
       - key: DOC_ENGINE
         value: opensearch
       - key: OS_HOST
-        value: opensearch
+        fromService:
+          type: pserv
+          name: opensearch
+          property: host
       - key: REDIS_HOST
-        value: redis
+        fromService:
+          type: pserv
+          name: redis
+          property: host
       - key: REDIS_PASSWORD
         sync: false
       - key: MINIO_HOST
-        value: minio
+        fromService:
+          type: pserv
+          name: minio
+          property: host
       - key: MINIO_USER
         sync: false
       - key: MINIO_PASSWORD
